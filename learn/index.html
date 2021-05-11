@@ -5,22 +5,41 @@
       <script src="twgl-full.min.js" type="text/javascript"></script>
       <script id="vs" type="notjs">
             attribute vec4 a_pos;
+            varying vec2 v_point_pos;
+            uniform vec2 u_res;
 
             void main()
             {
-                gl_PointSize=2.0;
                 gl_Position = a_pos;
+                gl_PointSize=100.0;
+                vec2 ndcPos = gl_Position.xy / gl_Position.w;
+                v_point_pos = u_res * (ndcPos*0.5 + 0.5);
             }
       </script>
 
       <script id="fs" type="notjs">
-            precision mediump float;
+            precision highp float;
 
-            void main()
-            {
+            varying vec2  v_point_pos;
+            uniform float aRadius;
+            uniform vec4  aColor;
 
-                gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-            }
+            const float threshold = 0.3;
+
+void main()
+{
+    float dist = distance(v_point_pos, gl_FragCoord.xy);
+    if (dist > 50.0)
+        discard;
+
+    if (dist > 45.0 && dist < 50.0) {
+      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    }
+    else 
+    {
+    gl_FragColor = vec4(0.5, 1.0, 1.0, 1.0);
+    }
+}
       </script>
   </head>
   <body>
