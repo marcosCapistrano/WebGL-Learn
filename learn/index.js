@@ -14,8 +14,8 @@ const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
     twgl.resizeCanvasToDisplaySize(gl.canvas);
     gl.viewport( 0, 0, gl.canvas.width, gl.canvas.height );
     gl.enable( gl.DEPTH_TEST );
-    gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
-    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+   // gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
+    //gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
     const uniforms = {
       u_res: [gl.canvas.width, gl.canvas.height],
       aRadius: 500,

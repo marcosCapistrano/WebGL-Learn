@@ -11,7 +11,7 @@
             void main()
             {
                 gl_Position = a_pos;
-                gl_PointSize=100.0;
+                gl_PointSize=300.0;
                 vec2 ndcPos = gl_Position.xy / gl_Position.w;
                 v_point_pos = u_res * (ndcPos*0.5 + 0.5);
             }
@@ -20,25 +20,44 @@
       <script id="fs" type="notjs">
             precision highp float;
 
+            #define PI 3.14
+            #define TWO_PI 6.28
+
             varying vec2  v_point_pos;
             uniform float aRadius;
             uniform vec4  aColor;
 
-            const float threshold = 0.3;
+            bool isAngle(vec2 vetor, float start, float end, bool inverted)
+{
+    float angulo = -1.0;
+    
+        if(vetor.x > 0.0 && vetor.y > 0.0)
+        {
+            angulo = atan(vetor.y/ vetor.x);
+            angulo = (angulo * 180.0) / PI;
+        }
+        else if (vetor.x < 0.0 && vetor.y > 0.0) {
+            angulo = PI + atan(vetor.y/ vetor.x);
+            angulo = (angulo * 180.0) / PI;
+        }
+        else if (vetor.x < 0.0 && vetor.y < 0.0) {
+            angulo = PI + atan(vetor.y/ vetor.x);
+            angulo = (angulo * 180.0) / PI;
+        }
+        else if (vetor.x > 0.0 && vetor.y < 0.0) {
+            angulo = TWO_PI + atan(vetor.y/ vetor.x);
+            angulo = (angulo * 180.0) / PI;
+        }
+        
+        if((start <= angulo && angulo <= end) || (inverted && end<=angulo && start<=angulo))
+            return true;
+            
+        return false;
+}
 
 void main()
 {
-    float dist = distance(v_point_pos, gl_FragCoord.xy);
-    if (dist > 50.0)
-        discard;
-
-    if (dist > 45.0 && dist < 50.0) {
-      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-    }
-    else 
-    {
-    gl_FragColor = vec4(0.5, 1.0, 1.0, 1.0);
-    }
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 }
       </script>
   </head>
